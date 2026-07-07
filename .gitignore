@@ -43,6 +43,12 @@ data/*.parquet
 data/*.pkl
 data/raw/
 data/processed/
+# Large raw data trees (never commit -- ~16GB of order-book / exchange dumps)
+data/lob/
+data/data2/
+data/binance/
+data/datasets/
+data/cache/
 
 # Model checkpoints
 models/*.pt

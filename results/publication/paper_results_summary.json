@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-01-08T19:41:27.140722",
+  "data_period": {
+    "start": "2024-01-01",
+    "end": "2026-01-08",
+    "n_days": 739
+  },
+  "real_data": {
+    "return_mean": 0.0012894868955541689,
+    "return_std": 0.02487369060897546,
+    "return_kurtosis": 2.446600116468223,
+    "price_start": 44179.55,
+    "price_end": 91196.41,
+    "total_return_pct": 106.42222476236176,
+    "sentiment_mean": 0.11520974289580516,
+    "sentiment_std": 0.4002591343710906
+  },
+  "regime_distribution": {
+    "greed": 311,
+    "fear": 140,
+    "neutral": 116,
+    "extreme_greed": 96,
+    "extreme_fear": 76
+  },
+  "calibration": {
+    "best_score": 101.39516634059787,
+    "best_params": {
+      "n_market_makers": 3,
+      "n_informed": 5,
+      "mm_inventory_aversion": 0.001,
+      "mm_uncertainty_sensitivity": 1.5,
+      "informed_threshold": 0.2,
+      "informed_unc_threshold": 0.1,
+      "noise_sentiment_bias": 0.15,
+      "mm_base_spread_bps": 15.0,
+      "mm_sentiment_sensitivity": 0.5,
+      "noise_trade_prob": 0.2,
+      "n_noise": 15
+    },
+    "metrics": {
+      "return_mean": -0.0008912646544215254,
+      "return_std": 0.019843697415712628,
+      "return_kurtosis": 11.163091032896537,
+      "return_skew": 3.1129547090834437,
+      "spread_mean_bps": 8.687000060528511,
+      "spread_std_bps": 9.765252418789531,
+      "vol_cluster_lag1": 0.8028535631791167,
+      "vol_cluster_lag5": -0.11182210468767442,
+      "trades_per_day": 13.310344827586206
+    }
+  },
+  "simulation": {
+    "n_steps": 3000,
+    "n_days": 60,
+    "return_mean": 0.004277168462362608,
+    "return_std": 0.03248402231594044,
+    "mean_spread_bps": 10.624304203100749
+  },
+  "key_findings": {
+    "sentiment_return_corr": -0.0034157241542067344,
+    "sentiment_predictive_corr": -0.003083600578413594,
+    "extreme_fear_return": 0.33541480027875586,
+    "extreme_greed_return": -0.14164613516154087,
+    "contrarian_signal": "extreme_fear_bullish"
+  }
+}

@@ -1,0 +1,2 @@
+n_observations,n_moments,n_parameters,overidentifying_restrictions,J_statistic,J_pvalue,model_rejected,w_aleatoric,w_epistemic,w_volatility
+715,4,3,1,75547.94378040075,0.0,True,0.010069020739056574,0.3221681004829758,0.6677628787779676

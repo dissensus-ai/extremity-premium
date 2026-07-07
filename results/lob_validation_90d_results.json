@@ -1,0 +1,48 @@
+{
+  "sample_period": "Oct 12, 2025 - Jan 10, 2026",
+  "n_days_total": 90,
+  "n_days_cs_valid": 61,
+  "lob_cs_comparison": {
+    "pearson_r": 0.336,
+    "pearson_p": 0.0082,
+    "spearman_r": 0.412,
+    "spearman_p": 0.001,
+    "lob_mean_bps": 6.97,
+    "cs_mean_bps": 141.15
+  },
+  "lob_uncertainty_correlation": {
+    "total_uncertainty": {
+      "pearson_r": 0.131,
+      "pearson_p": 0.2197,
+      "spearman_r": 0.207,
+      "spearman_p": 0.0518,
+      "n": 89
+    },
+    "aleatoric_proxy": {
+      "pearson_r": 0.185,
+      "pearson_p": 0.0818,
+      "spearman_r": 0.193,
+      "spearman_p": 0.0699,
+      "n": 89
+    },
+    "epistemic_proxy": {
+      "pearson_r": 0.04,
+      "pearson_p": 0.7082,
+      "spearman_r": 0.136,
+      "spearman_p": 0.2036,
+      "n": 89
+    }
+  },
+  "lob_volatility_correlation": {
+    "parkinson_vol": {
+      "pearson_r": 0.108,
+      "pearson_p": 0.3143,
+      "n": 89
+    },
+    "realized_vol": {
+      "pearson_r": 0.183,
+      "pearson_p": 0.086,
+      "n": 89
+    }
+  }
+}

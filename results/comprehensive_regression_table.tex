@@ -1,0 +1,39 @@
+\begin{table}[h!]
+\centering
+\caption{Progressive Model Specifications: Uncertainty Beyond Realized Volatility}
+\label{tab:comprehensive_regression}
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+& \textbf{Model 1} & \textbf{Model 2} & \textbf{Model 3} & \textbf{Model 4} & \textbf{Model 5} \\
+\textbf{Variable} & Vol Only & + Regimes & + Controls & + ETF Event & Continuous \\
+\midrule
+Volatility & +1.182*** & +1.119*** & +1.086*** & +1.086*** & +1.148*** \\
+ & (0.076) & (0.072) & (0.077) & (0.077) & (0.076) \\
+\addlinespace
+\multicolumn{6}{l}{\textit{Regime Dummies (Neutral = baseline)}} \\
+Extreme Greed & --- & +0.055* & +0.046* & +0.046* & --- \\
+Greed & --- & +0.003 & -0.000 & -0.000 & --- \\
+Fear & --- & +0.034* & +0.034* & +0.034* & --- \\
+Extreme Fear & --- & +0.039 & +0.036 & +0.036 & --- \\
+\addlinespace
+\multicolumn{6}{l}{\textit{Additional Controls}} \\
+Log(Volume) & --- & --- & +0.017* & +0.017* & --- \\
+Daily Returns & --- & --- & +0.221* & +0.221* & --- \\
+ETF Approval & --- & --- & --- & +0.000 & --- \\
+\addlinespace
+\multicolumn{6}{l}{\textit{Continuous Measure (Model 5)}} \\
+Distance from Neutral & --- & --- & --- & --- & +0.077* \\
+\midrule
+$R^2$ & 0.755 & 0.768 & 0.772 & 0.772 & 0.763 \\
+$\Delta R^2$ & --- & +0.013 & +0.004 & +-0.000 & --- \\
+F-test (regimes) & --- & 4.4*** & --- & --- & --- \\
+N & 715 & 715 & 715 & 715 & 715 \\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+\caption*{\footnotesize Newey-West HAC SEs (5 lags). Neutral regime = reference category.
+*** $p < 0.001$, ** $p < 0.01$, * $p < 0.05$.
+Model 5 uses continuous distance from neutral (0 = neutral, 1 = extreme) instead of discrete regime dummies.
+ETF Approval = dummy for Jan 10--20, 2024 (Bitcoin spot ETF approval window).}
+\end{table}

@@ -1,0 +1,4 @@
+Uncertainty Measure,Real Pearson r,Real p-value,Simulation r,Sim p-value,Direction Match
+Realized Vol,0.243,0.0000,0.107,0.0163,Yes
+Range Vol,0.260,0.0000,0.096,0.0312,Yes
+Volume Dispersion,0.130,0.0005,0.028,0.5271,Yes

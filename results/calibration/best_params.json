@@ -1,0 +1,28 @@
+{
+  "params": {
+    "n_informed": 5,
+    "mm_inventory_aversion": 0.001,
+    "informed_threshold": 0.25,
+    "informed_unc_threshold": 0.1,
+    "noise_sentiment_bias": 0.1,
+    "mm_base_spread_bps": 7.0,
+    "mm_sentiment_sensitivity": 0.3,
+    "mm_uncertainty_sensitivity": 1.0,
+    "noise_trade_prob": 0.5,
+    "n_noise": 15,
+    "n_market_makers": 5
+  },
+  "metrics": {
+    "return_mean": -0.0008205000872404083,
+    "return_std": 0.011445882394462066,
+    "return_kurtosis": 4.489843473876865,
+    "return_skew": 1.7625727749409044,
+    "spread_mean_bps": 4.310245889616231,
+    "spread_std_bps": 7.012497229325133,
+    "vol_cluster_lag1": 0.051202667447107345,
+    "vol_cluster_lag5": -0.11786254814492653,
+    "trades_per_day": 47.3448275862069
+  },
+  "score": 31.425667437699346,
+  "timestamp": "2026-01-09T05:05:01.716246"
+}

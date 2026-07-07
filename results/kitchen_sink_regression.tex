@@ -1,0 +1,54 @@
+\begin{table}[htbp]
+\centering
+\caption{Comprehensive Regression: Spread Determinants}
+\label{tab:kitchen_sink}
+\small
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+& \textbf{(1)} & \textbf{(2)} & \textbf{(3)} & \textbf{(4)} & \textbf{(5)} & \textbf{(6)} & \textbf{(7)} \\
+& Regimes & +Vol & +Ret/Vol & +Day FE & Kitchen & Continuous & Binary \\
+\midrule
+\multicolumn{8}{l}{\textit{Sentiment Regime (Neutral = baseline)}} \\
+Extreme Fear & 88.896*** & 15.102 & 9.002 & 10.765 & 8.787 & --- & --- \\
+ & (17.498) & (11.736) & (11.646) & (11.175) & (12.095) & & \\
+Fear & 27.945* & -3.959 & -3.310 & -1.671 & -1.963 & --- & --- \\
+ & (12.018) & (8.120) & (8.102) & (7.667) & (8.265) & & \\
+Greed & 25.936* & 8.797 & 9.449 & 10.203 & 8.284 & --- & --- \\
+ & (10.220) & (7.971) & (7.689) & (7.469) & (8.249) & & \\
+Extreme Greed & 95.976*** & 23.883 & 15.423 & 15.430 & 16.622 & --- & --- \\
+ & (21.458) & (15.391) & (14.539) & (14.127) & (14.685) & & \\
+\addlinespace
+\multicolumn{8}{l}{\textit{Alternative Extremity Measures}} \\
+Distance from Neutral & --- & --- & --- & --- & --- & 26.557 & --- \\
+ & & & & & & (17.049) & \\
+Extreme (binary) & --- & --- & --- & --- & --- & --- & 9.213 \\
+ & & & & & & & (8.346) \\
+\addlinespace
+\multicolumn{8}{l}{\textit{Volatility Controls}} \\
+Realized Volatility & --- & 8531.142*** & 6563.213*** & 6959.164*** & 6506.502*** & 6858.409*** & 6960.847*** \\
+ & & (781.391) & (938.949) & (924.074) & (867.202) & (943.005) & (930.190) \\
+RV$^2$ & --- & -41355.280*** & -33595.902*** & -35099.327*** & -32920.024*** & -34797.295*** & -35264.810*** \\
+ & & (7832.460) & (8485.184) & (8459.430) & (8255.445) & (8521.821) & (8493.345) \\
+\addlinespace
+\multicolumn{8}{l}{\textit{Additional Controls}} \\
+$|$Returns$|$ & --- & --- & 1360.216* & 1227.628† & 1087.570† & 1227.678† & 1233.751† \\
+ & & & (665.734) & (651.746) & (630.244) & (651.775) & (653.083) \\
+Log(Volume) & --- & --- & 24.369*** & 16.210*** & 33.379*** & 15.984** & 15.970*** \\
+ & & & (5.078) & (4.708) & (6.811) & (4.863) & (4.803) \\
+\midrule
+\multicolumn{8}{l}{\textit{Fixed Effects}} \\
+Day-of-Week FE & No & No & No & Yes & Yes & Yes & Yes \\
+Month FE & No & No & No & No & Yes & No & No \\
+Year FE & No & No & No & No & Yes & No & No \\
+\midrule
+\multicolumn{8}{l}{\textit{Model Statistics}} \\
+$R^2$ & 0.048 & 0.217 & 0.275 & 0.298 & 0.314 & 0.298 & 0.297 \\
+Adj. $R^2$ & 0.046 & 0.215 & 0.272 & 0.293 & 0.302 & 0.294 & 0.294 \\
+$N$ & 1,961 & 1,961 & 1,961 & 1,961 & 1,961 & 1,961 & 1,961 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item \textit{Notes:} Dependent variable is Corwin-Schultz spread proxy. HAC (Newey-West) standard errors in parentheses with 10 lags. Neutral sentiment regime (F\&G 46--55) is the omitted baseline. $^{***}p<0.001$, $^{**}p<0.01$, $^{*}p<0.05$, $^{\dagger}p<0.10$.
+\end{tablenotes}
+\end{table}

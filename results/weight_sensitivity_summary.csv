@@ -1,0 +1,7 @@
+metric,value
+Weight configurations tested,25
+Ranking preserved (%),100.0%
+Min extreme_greed gap,+0.2386
+Max extreme_greed gap,+0.2598
+Min extreme_fear gap,+0.1152
+Max extreme_fear gap,+0.1168

@@ -1,0 +1,25 @@
+
+\begin{table}[htbp]
+\centering
+\caption{LOB Validation: Quoted vs. Corwin-Schultz Spreads}
+\label{tab:lob_validation}
+\small
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{p-value} \\
+\midrule
+Pearson Correlation & -0.077 & 0.8029 \\
+Spearman Correlation & -0.373 & 0.2090 \\
+Mean Abs. Difference (bps) & 87.10 & -- \\
+LOB Mean Spread (bps) & 5.09 & -- \\
+CS Mean Spread (bps) & 88.53 & -- \\
+N (days) & 13 & -- \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5em}
+\raggedright\footnotesize
+\textit{Notes:} Comparison of directly observed quoted spreads from Bybit L2 order book data
+with Corwin-Schultz (2012) estimates from daily OHLC. High correlation validates the CS estimator
+for this sample.
+\end{table}

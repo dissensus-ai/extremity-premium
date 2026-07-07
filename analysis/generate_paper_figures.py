@@ -11,10 +11,11 @@ from pathlib import Path
 import warnings
 warnings.filterwarnings('ignore')
 
-# Set up paths
+# Set up paths (repo-relative, no hard-coded absolute paths)
 RESULTS_DIR = Path(__file__).parent.parent / "results"
-FIGURES_DIR = Path("/home/purrpower/Resurrexi/projects/papers/arxiv-staging/sentiment-abm-paper/arxiv-submission/figures")
-FIGURES_DIR.mkdir(exist_ok=True)
+# Inside the repo so it resolves in a standalone clone (code/ is the repo root).
+FIGURES_DIR = Path(__file__).parent.parent / "figures"
+FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
 # Publication style
 plt.rcParams.update({

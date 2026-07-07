@@ -1,0 +1,2 @@
+observed_gap,permuted_mean,permuted_std,p_value_one_sided,p_value_two_sided,n_permutations
+0.041529125956892746,5.852830638267801e-05,0.009138724636622566,0.0,0.0,10000

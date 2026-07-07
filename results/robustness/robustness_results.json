@@ -1,0 +1,451 @@
+{
+  "run_timestamp": "2026-01-08T21:49:40.152670",
+  "data_summary": {
+    "n_observations": 739,
+    "date_range": "2024-01-01 to 2026-01-08"
+  },
+  "statistical_tests": {
+    "test_date": "2026-01-08T21:49:40.152824",
+    "n_observations": 739,
+    "regime_tstests": {
+      "extreme_fear": {
+        "n": 76,
+        "mean_pct": 0.3354148002787559,
+        "std_pct": 2.8758187599541927,
+        "se_pct": 0.32987903564681,
+        "t_statistic": 1.0167811956315795,
+        "p_value": 0.31252640731076503,
+        "significant_5pct": "False"
+      },
+      "fear": {
+        "n": 140,
+        "mean_pct": -0.04010490737163626,
+        "std_pct": 2.5647309787501915,
+        "se_pct": 0.2167593298924757,
+        "t_statistic": -0.18502044360226824,
+        "p_value": 0.8534826913848989,
+        "significant_5pct": "False"
+      },
+      "neutral": {
+        "n": 116,
+        "mean_pct": 0.12832729787834787,
+        "std_pct": 2.2021446602390604,
+        "se_pct": 0.20446399869894066,
+        "t_statistic": 0.6276278400839704,
+        "p_value": 0.5314920413853201,
+        "significant_5pct": "False"
+      },
+      "greed": {
+        "n": 310,
+        "mean_pct": 0.2387076049172931,
+        "std_pct": 2.201820504413797,
+        "se_pct": 0.12505500123696575,
+        "t_statistic": 1.9088209392359115,
+        "p_value": 0.057211446031334816,
+        "significant_5pct": "False"
+      },
+      "extreme_greed": {
+        "n": 96,
+        "mean_pct": -0.14164613516154098,
+        "std_pct": 3.1647740051262847,
+        "se_pct": 0.3230033943243197,
+        "t_statistic": -0.4385283178148822,
+        "p_value": 0.6619989943223785,
+        "significant_5pct": "False"
+      }
+    },
+    "fear_vs_greed": {
+      "mean_diff_pct": 0.47706093544029693,
+      "t_statistic": 1.021836116830993,
+      "p_value": 0.3083103904856934,
+      "cohens_d": 0.15777128945903168,
+      "significant_5pct": "False"
+    },
+    "bootstrap_ci": {
+      "extreme_fear": {
+        "mean_pct": 0.3354148002787559,
+        "ci_lower_pct": -0.29317617247324146,
+        "ci_upper_pct": 0.9996897749167746,
+        "ci_excludes_zero": false
+      },
+      "fear": {
+        "mean_pct": -0.04010490737163626,
+        "ci_lower_pct": -0.4574093942159854,
+        "ci_upper_pct": 0.38536942981443295,
+        "ci_excludes_zero": false
+      },
+      "neutral": {
+        "mean_pct": 0.12832729787834787,
+        "ci_lower_pct": -0.2657237278295484,
+        "ci_upper_pct": 0.5260105653974593,
+        "ci_excludes_zero": false
+      },
+      "greed": {
+        "mean_pct": 0.2387076049172931,
+        "ci_lower_pct": -0.006235298867155776,
+        "ci_upper_pct": 0.4810601198667842,
+        "ci_excludes_zero": false
+      },
+      "extreme_greed": {
+        "mean_pct": -0.14164613516154098,
+        "ci_lower_pct": -0.7603825302017627,
+        "ci_upper_pct": 0.4894434836629809,
+        "ci_excludes_zero": false
+      }
+    },
+    "newey_west": {
+      "regression_summary": "                            OLS Regression Results                            \n==============================================================================\nDep. Variable:            returns_pct   R-squared:                       0.004\nModel:                            OLS   Adj. R-squared:                 -0.001\nMethod:                 Least Squares   F-statistic:                    0.5403\nDate:                Thu, 08 Jan 2026   Prob (F-statistic):              0.706\nTime:                        21:49:40   Log-Likelihood:                -1717.7\nNo. Observations:                 738   AIC:                             3445.\nDf Residuals:                     733   BIC:                             3468.\nDf Model:                           4                                         \nCovariance Type:                  HAC                                         \n===================================================================================\n                      coef    std err          z      P>|z|      [0.025      0.975]\n-----------------------------------------------------------------------------------\nconst              -0.1416      0.335     -0.423      0.672      -0.798       0.515\nis_extreme_fear     0.4771      0.481      0.992      0.321      -0.465       1.420\nis_fear             0.1015      0.396      0.256      0.798      -0.675       0.878\nis_neutral          0.2700      0.390      0.693      0.488      -0.494       1.034\nis_greed            0.3804      0.363      1.048      0.295      -0.331       1.092\n==============================================================================\nOmnibus:                       67.613   Durbin-Watson:                   2.095\nProb(Omnibus):                  0.000   Jarque-Bera (JB):              201.711\nSkew:                           0.433   Prob(JB):                     1.58e-44\nKurtosis:                       5.410   Cond. No.                         7.44\n==============================================================================\n\nNotes:\n[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 5 lags and without small sample correction",
+      "coefficients": {
+        "const": -0.14164613516154284,
+        "is_extreme_fear": 0.47706093544029854,
+        "is_fear": 0.10154122778990729,
+        "is_neutral": 0.26997343303989063,
+        "is_greed": 0.38035374007883527
+      },
+      "pvalues": {
+        "const": 0.6724541804060405,
+        "is_extreme_fear": 0.3211468832051786,
+        "is_fear": 0.7978088493001017,
+        "is_neutral": 0.48832847085821696,
+        "is_greed": 0.29464733313395475
+      }
+    }
+  },
+  "out_of_sample": {
+    "train_2024": {
+      "extreme_fear": {
+        "n": 8,
+        "mean_pct": 2.1712527145303313,
+        "std_pct": 4.492907552151482,
+        "t_statistic": 1.366872120374608,
+        "p_value": 0.21394204954614546
+      },
+      "extreme_greed": {
+        "n": 86,
+        "mean_pct": -0.06932404377458636,
+        "std_pct": 3.1815816554908256,
+        "t_statistic": -0.20206450883354093,
+        "p_value": 0.840349127085523
+      }
+    },
+    "test_2025_26": {
+      "extreme_fear": {
+        "n": 68,
+        "mean_pct": 0.1194338691903354,
+        "std_pct": 2.588254275286112,
+        "t_statistic": 0.38051783601788525,
+        "p_value": 0.7047648211327144
+      },
+      "extreme_greed": {
+        "n": 10,
+        "mean_pct": -0.7636161210893511,
+        "std_pct": 3.1050663600330606,
+        "t_statistic": -0.7776858593899989,
+        "p_value": 0.45670961017817713
+      }
+    },
+    "pattern_consistency": {
+      "train_diff_pct": 2.240576758304918,
+      "test_diff_pct": 0.8830499902796864,
+      "same_direction": true
+    }
+  },
+  "ablations": {
+    "threshold_sensitivity": {
+      "fear<20_greed>80": {
+        "n_fear": 23,
+        "n_greed": 35,
+        "fear_return_pct": 0.1419219244659943,
+        "greed_return_pct": 0.07790683151317186,
+        "contrarian_holds": "True"
+      },
+      "fear<25_greed>75": {
+        "n_fear": 64,
+        "n_greed": 96,
+        "fear_return_pct": 0.29037690171117514,
+        "greed_return_pct": -0.14164613516154087,
+        "contrarian_holds": "True"
+      },
+      "fear<30_greed>70": {
+        "n_fear": 127,
+        "n_greed": 254,
+        "fear_return_pct": 0.21581884111488348,
+        "greed_return_pct": 0.15592278655733222,
+        "contrarian_holds": "True"
+      },
+      "fear<15_greed>85": {
+        "n_fear": 10,
+        "n_greed": 9,
+        "fear_return_pct": -0.46015593496086094,
+        "greed_return_pct": -1.3484566382949257,
+        "contrarian_holds": "True"
+      }
+    },
+    "predictive_vs_contemporaneous": {
+      "extreme_fear": {
+        "same_day_mean_pct": 0.3354148002787559,
+        "same_day_p": 0.31252640731076503,
+        "next_day_mean_pct": 0.40402379872828,
+        "next_day_p": 0.17843366368586083
+      },
+      "extreme_greed": {
+        "same_day_mean_pct": -0.14164613516154098,
+        "same_day_p": 0.6619989943223785,
+        "next_day_mean_pct": 0.0669837318847435,
+        "next_day_p": 0.8485123023312847
+      }
+    },
+    "rolling_window": {
+      "n_windows": 18,
+      "n_contrarian_holds": 14,
+      "pct_contrarian_holds": 77.77777777777779,
+      "windows": [
+        {
+          "start_date": "2024-01-31",
+          "end_date": "2024-07-28",
+          "fear_return_pct": 1.6146307466482352,
+          "greed_return_pct": -0.2981653705927764,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2024-03-01",
+          "end_date": "2024-08-27",
+          "fear_return_pct": 3.4916008161769367,
+          "greed_return_pct": -0.5865292913167732,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2024-03-31",
+          "end_date": "2024-09-26",
+          "fear_return_pct": 2.1712527145303313,
+          "greed_return_pct": -1.199888656748092,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2024-04-30",
+          "end_date": "2024-10-26",
+          "fear_return_pct": 2.1712527145303313,
+          "greed_return_pct": -1.0566854111364086,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2024-05-30",
+          "end_date": "2024-11-25",
+          "fear_return_pct": 2.1712527145303313,
+          "greed_return_pct": 0.7100802453123495,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2024-06-29",
+          "end_date": "2024-12-25",
+          "fear_return_pct": 2.1712527145303313,
+          "greed_return_pct": 0.3573835777526101,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2024-07-29",
+          "end_date": "2025-01-24",
+          "fear_return_pct": 2.35679337049103,
+          "greed_return_pct": 0.1844908248909563,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2024-08-28",
+          "end_date": "2025-02-23",
+          "fear_return_pct": -1.7897915904094848,
+          "greed_return_pct": 0.1339708078384619,
+          "contrarian_holds": "False"
+        },
+        {
+          "start_date": "2024-09-27",
+          "end_date": "2025-03-25",
+          "fear_return_pct": 0.11850120149519602,
+          "greed_return_pct": 0.1339708078384619,
+          "contrarian_holds": "False"
+        },
+        {
+          "start_date": "2024-10-27",
+          "end_date": "2025-04-24",
+          "fear_return_pct": 0.8276679541017052,
+          "greed_return_pct": 0.1339708078384619,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2024-11-26",
+          "end_date": "2025-05-24",
+          "fear_return_pct": 0.8276679541017052,
+          "greed_return_pct": -0.5175108585549331,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2024-12-26",
+          "end_date": "2025-06-23",
+          "fear_return_pct": 0.8276679541017052,
+          "greed_return_pct": -1.120342743853815,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2025-01-25",
+          "end_date": "2025-07-23",
+          "fear_return_pct": 0.8276679541017052,
+          "greed_return_pct": -2.0670111322913303,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2025-02-24",
+          "end_date": "2025-08-22",
+          "fear_return_pct": 0.8276679541017052,
+          "greed_return_pct": -2.0055417101488553,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2025-03-26",
+          "end_date": "2025-09-21",
+          "fear_return_pct": 2.2460014593147237,
+          "greed_return_pct": -2.0055417101488553,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2025-04-25",
+          "end_date": "2025-10-21",
+          "fear_return_pct": 0.9926794996946933,
+          "greed_return_pct": -2.0055417101488553,
+          "contrarian_holds": "True"
+        },
+        {
+          "start_date": "2025-05-25",
+          "end_date": "2025-11-20",
+          "fear_return_pct": -0.7653270354357361,
+          "greed_return_pct": -0.09160396795103,
+          "contrarian_holds": "False"
+        },
+        {
+          "start_date": "2025-06-24",
+          "end_date": "2025-12-20",
+          "fear_return_pct": -0.14668690071198753,
+          "greed_return_pct": -0.09160396795103,
+          "contrarian_holds": "False"
+        }
+      ]
+    }
+  },
+  "backtest": {
+    "strategy_metrics": {
+      "n_trades": 14,
+      "avg_hold_days": 8.5,
+      "gross_return_mean_pct": 1.3383735602343783,
+      "gross_return_std_pct": 6.479489405747244,
+      "net_return_mean_pct": 1.1383735602343787,
+      "net_return_std_pct": 6.479489405747244,
+      "win_rate_gross": 0.5714285714285714,
+      "win_rate_net": 0.5714285714285714,
+      "total_gross_return_pct": 18.7372298432813,
+      "total_net_return_pct": 15.9372298432813,
+      "sharpe_ratio_net": 0.17568877560393145,
+      "t_statistic": 0.6334548889634617,
+      "p_value": 0.5374222651864777,
+      "significant_5pct": "False"
+    },
+    "trades": [
+      {
+        "entry_date": "2024-07-12",
+        "exit_date": "2024-07-15",
+        "hold_days": 3,
+        "gross_return_pct": 11.807127766712554,
+        "net_return_pct": 11.607127766712555
+      },
+      {
+        "entry_date": "2024-08-06",
+        "exit_date": "2024-08-09",
+        "hold_days": 3,
+        "gross_return_pct": 8.596585520583776,
+        "net_return_pct": 8.396585520583777
+      },
+      {
+        "entry_date": "2024-08-12",
+        "exit_date": "2024-08-22",
+        "hold_days": 10,
+        "gross_return_pct": 1.7342178091295457,
+        "net_return_pct": 1.5342178091295458
+      },
+      {
+        "entry_date": "2024-09-06",
+        "exit_date": "2024-09-14",
+        "hold_days": 8,
+        "gross_return_pct": 11.174440546915786,
+        "net_return_pct": 10.974440546915787
+      },
+      {
+        "entry_date": "2025-02-25",
+        "exit_date": "2025-03-07",
+        "hold_days": 10,
+        "gross_return_pct": -2.11845007465008,
+        "net_return_pct": -2.3184500746500802
+      },
+      {
+        "entry_date": "2025-03-10",
+        "exit_date": "2025-03-15",
+        "hold_days": 5,
+        "gross_return_pct": 7.306466269342948,
+        "net_return_pct": 7.106466269342948
+      },
+      {
+        "entry_date": "2025-04-03",
+        "exit_date": "2025-04-13",
+        "hold_days": 10,
+        "gross_return_pct": 0.6572403452389519,
+        "net_return_pct": 0.4572403452389519
+      },
+      {
+        "entry_date": "2025-10-12",
+        "exit_date": "2025-10-22",
+        "hold_days": 10,
+        "gross_return_pct": -6.429573029641922,
+        "net_return_pct": -6.629573029641922
+      },
+      {
+        "entry_date": "2025-11-04",
+        "exit_date": "2025-11-14",
+        "hold_days": 10,
+        "gross_return_pct": -6.801388254771901,
+        "net_return_pct": -7.001388254771901
+      },
+      {
+        "entry_date": "2025-11-15",
+        "exit_date": "2025-11-25",
+        "hold_days": 10,
+        "gross_return_pct": -8.605233846017368,
+        "net_return_pct": -8.805233846017368
+      },
+      {
+        "entry_date": "2025-11-26",
+        "exit_date": "2025-12-06",
+        "hold_days": 10,
+        "gross_return_pct": -1.378398086203525,
+        "net_return_pct": -1.578398086203525
+      },
+      {
+        "entry_date": "2025-12-07",
+        "exit_date": "2025-12-17",
+        "hold_days": 10,
+        "gross_return_pct": -4.593258212179363,
+        "net_return_pct": -4.793258212179363
+      },
+      {
+        "entry_date": "2025-12-18",
+        "exit_date": "2025-12-28",
+        "hold_days": 10,
+        "gross_return_pct": 2.8489268901723097,
+        "net_return_pct": 2.6489268901723095
+      },
+      {
+        "entry_date": "2025-12-29",
+        "exit_date": "2026-01-08",
+        "hold_days": 10,
+        "gross_return_pct": 4.538526198649584,
+        "net_return_pct": 4.338526198649584
+      }
+    ],
+    "buy_and_hold_return_pct": 106.42222476236176
+  }
+}

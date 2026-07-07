@@ -16,6 +16,10 @@ Author: Murad Farzulla
 Date: January 2026
 """
 
+# Resolve the ../results/ paths below regardless of the invocation directory.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.abspath(__file__)))
+
 import pandas as pd
 import numpy as np
 from scipy import stats

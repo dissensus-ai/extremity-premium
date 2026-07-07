@@ -1,0 +1,29 @@
+\begin{table}[h!]
+\centering
+\caption{Placebo and Identification Tests}
+\label{tab:placebo}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Test} & \textbf{Observed} & \textbf{Null Mean} & \textbf{Null SD} & \textbf{$p$-value} \\
+\midrule
+\multicolumn{5}{l}{\textit{Permutation Tests}} \\
+Standard Permutation$^a$ & 0.042 & 0.000 & 0.009 & $<$0.0001 \\
+Block-Shuffled$^b$ & 0.042 & -0.000 & 0.022 & 0.0321 \\
+Synthetic AR(1)$^c$ & 0.042 & 0.001 & 0.023 & 0.0393 \\
+\addlinespace
+\multicolumn{5}{l}{\textit{Time-Reversed Causality (spread$_t$ $\sim$ regime$_{t+k}$)}} \\
+Forward $k=1$ & $\hat{\beta}=0.031$ & \multicolumn{2}{c}{95\% CI: [0.017, 0.046]} & 0.000 \\
+Forward $k=3$ & $\hat{\beta}=0.021$ & \multicolumn{2}{c}{95\% CI: [0.006, 0.036]} & 0.003 \\
+Forward $k=5$ & $\hat{\beta}=0.019$ & \multicolumn{2}{c}{95\% CI: [0.003, 0.035]} & 0.009 \\
+Forward $k=7$ & $\hat{\beta}=0.025$ & \multicolumn{2}{c}{95\% CI: [0.009, 0.040]} & 0.001 \\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+\caption*{\footnotesize
+$^a$Standard permutation shuffles individual days (10,000 permutations).
+$^b$Block-shuffled permutation preserves regime autocorrelation by shuffling contiguous blocks.
+$^c$Synthetic AR(1) generates regimes from fitted AR(1) model on F\&G values.
+Time-reversed tests regress current uncertainty on \textit{future} regime indicators; null hypothesis is no reverse causality.
+All tests use volatility-residualized uncertainty.}
+\end{table}

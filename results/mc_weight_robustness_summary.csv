@@ -1,0 +1,8 @@
+metric,value
+Monte Carlo simulations,1000
+Dirichlet concentration,"Dirichlet(1,1,1,1)"
+Fraction preserved,100.0%
+95% CI lower,99.6%
+95% CI upper,100.0%
+Failures (greed < neutral),0
+Failures (fear < neutral),0

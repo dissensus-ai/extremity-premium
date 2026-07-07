@@ -1,0 +1,2 @@
+f_stat,f_pvalue,strong_instruments,ols_coef,iv_coef,bias_direction
+2781.8223110025183,0.0,True,168.3645119148453,168.16222056946998,upward

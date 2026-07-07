@@ -1,0 +1,34 @@
+{
+  "BTCUSDT_comparison": {
+    "n_days": 13,
+    "pearson_corr": -0.07684942922260887,
+    "pearson_p": 0.8029485108928857,
+    "spearman_corr": -0.3732952601008456,
+    "spearman_p": 0.20898976902578853,
+    "mae_bps": 87.0985470258627,
+    "relative_diff_pct": 1969.6989258331641,
+    "lob_mean": 5.086532775522529,
+    "cs_mean": 88.52842604786768,
+    "lob_std": 1.7923970309124646,
+    "cs_std": 95.5056702461822
+  },
+  "BTCUSDT_uncertainty": {
+    "error": "Insufficient overlap: 13 days"
+  },
+  "ETHUSDT_comparison": {
+    "n_days": 13,
+    "pearson_corr": -0.06546774325078827,
+    "pearson_p": 0.8317254592603568,
+    "spearman_corr": -0.2841501233603452,
+    "spearman_p": 0.3467645149376387,
+    "mae_bps": 86.34912318867651,
+    "relative_diff_pct": 1277.5713514272202,
+    "lob_mean": 7.448566010445763,
+    "cs_mean": 88.52842604786768,
+    "lob_std": 2.4344671191451437,
+    "cs_std": 95.5056702461822
+  },
+  "ETHUSDT_uncertainty": {
+    "error": "Insufficient overlap: 13 days"
+  }
+}

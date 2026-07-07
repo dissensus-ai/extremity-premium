@@ -1,0 +1,18 @@
+{
+  "sim_return_mean": 0.004277168462362608,
+  "sim_return_std": 0.032484022315940456,
+  "real_return_mean": 0.005877501972409276,
+  "real_return_std": 0.027110217599851206,
+  "sim_kurtosis": 13.244034642678596,
+  "real_kurtosis": 2.5356399054483147,
+  "mean_spread_bps": 10.624304203100749,
+  "spread_std": 23.741949529969656,
+  "sentiment_return_corr": 0.3660108544238967,
+  "regime_spreads": {
+    "extreme_greed": 9.284765915961547,
+    "greed": 13.050558208865029,
+    "neutral": 2.897548235253629
+  },
+  "vol_clustering_lag1": 0.7142680067427091,
+  "vol_clustering_lag5": -0.07768696369895062
+}

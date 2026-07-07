@@ -1,0 +1,6 @@
+comparison,cohens_d,interpretation,n_treatment,n_control
+extreme_greed vs neutral,0.539078753424614,medium,94,110
+greed vs neutral,0.025611486413761996,negligible,295,110
+fear vs neutral,0.32676791987226,small,140,110
+extreme_fear vs neutral,0.45341846926834584,small,76,110
+Pooled extreme vs neutral,0.4882129725658925,medium,170,110

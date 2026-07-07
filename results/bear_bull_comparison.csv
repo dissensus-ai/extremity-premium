@@ -1,0 +1,5 @@
+regime,coef_2022_bear,sig_2022,coef_2024_bull,sig_2024,same_direction
+extreme_fear,0.016934292607941683,False,0.030296806640277316,True,True
+fear,-0.017171019415363507,False,0.009588222493348664,False,False
+greed,,False,-0.005746689436897617,False,
+extreme_greed,,False,0.0012910314467488855,False,

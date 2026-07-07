@@ -1,0 +1,2 @@
+test,n_observations,n_instruments,r_squared,f_statistic,p_value,weak_instruments
+exogenous_instruments_only,714,3,0.017178924480084623,4.136743599509474,0.006388331913977918,True
