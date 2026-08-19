@@ -138,6 +138,61 @@ def fig2_volatility_matched():
     plt.close()
 
 
+def fig2b_volatility_matched_extreme():
+    """Figure 2b: Extreme-only (EG+EF vs neutral) volatility-matched comparison.
+
+    Uses results/volatility_matched_extreme_only.csv (Table-16 quintile
+    assignment; produced by volatility_matched_regimes.run_extreme_only_analysis).
+    Written to a NEW filename -- does not overwrite fig2_volatility_matched,
+    which pools all non-neutral days as "directional".
+    """
+    csv_path = RESULTS_DIR / "volatility_matched_extreme_only.csv"
+    if not csv_path.exists():
+        print("⚠ volatility_matched_extreme_only.csv not found, skipping Figure 2b")
+        return
+
+    df = pd.read_csv(csv_path)
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    x = np.arange(len(df))
+    width = 0.35
+
+    ax.bar(x - width/2, df['neutral_mean'], width,
+           label='Neutral Regime', color=COLORS['neutral'], alpha=0.8)
+    ax.bar(x + width/2, df['extreme_mean'], width,
+           label='Extreme Regimes (Extreme Fear + Extreme Greed)',
+           color=COLORS['primary'], alpha=0.8)
+
+    ax.set_ylabel('Mean Uncertainty')
+    ax.set_xlabel('Volatility Quintile')
+    ax.set_title('Volatility-Matched Comparison: Extreme vs Neutral Regimes',
+                 fontweight='bold')
+    ax.set_xticks(x)
+    ax.set_xticklabels(['Q1\n(Lowest)', 'Q2', 'Q3', 'Q4', 'Q5\n(Highest)'])
+    ax.legend(loc='upper left', framealpha=0.9)
+
+    for i in range(len(df)):
+        ax.annotate(f"n={df['neutral_n'].iloc[i]}",
+                    (i - width/2, df['neutral_mean'].iloc[i] + 0.01),
+                    ha='center', fontsize=7, color=COLORS['neutral'])
+        ax.annotate(f"n={df['extreme_n'].iloc[i]}",
+                    (i + width/2, df['extreme_mean'].iloc[i] + 0.01),
+                    ha='center', fontsize=7, color=COLORS['primary'])
+
+    n_positive = int((df['gap'] > 0).sum())
+    ax.annotate(f"Extreme > Neutral in {n_positive}/{len(df)} quintiles",
+                xy=(0.02, 0.72), xycoords='axes fraction', fontsize=9,
+                bbox=dict(boxstyle='round,pad=0.3', facecolor='white',
+                          edgecolor='gray'))
+
+    ax.set_ylim(0, max(df['neutral_mean'].max(), df['extreme_mean'].max()) * 1.25)
+    plt.tight_layout()
+    plt.savefig(FIGURES_DIR / "fig2_volatility_matched_extreme.pdf")
+    plt.savefig(FIGURES_DIR / "fig2_volatility_matched_extreme.png")
+    print("✓ Figure 2b: Extreme-only volatility-matched comparison saved")
+    plt.close()
+
+
 def fig3_time_series():
     """Figure 3: Time series of spreads and uncertainty."""
     df = pd.read_csv(RESULTS_DIR / "real_spread_data.csv")
@@ -304,6 +359,7 @@ if __name__ == "__main__":
 
     fig1_regime_uncertainty_boxplot()
     fig2_volatility_matched()
+    fig2b_volatility_matched_extreme()
     fig3_time_series()
     fig4_spread_uncertainty_scatter()
     fig5_uncertainty_decomposition()

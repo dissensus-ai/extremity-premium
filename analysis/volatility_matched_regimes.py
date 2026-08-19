@@ -148,6 +148,112 @@ def run_within_quintile_tests(df):
     return pd.DataFrame(results)
 
 
+def load_t16_data():
+    """
+    Load data with the Table `tab:within_quintile` conventions
+    (analysis/reviewer_response_details.py:load_data): uncertainty =
+    total_uncertainty, volatility = realized_vol filled with parkinson_vol,
+    rows require cs_spread. This yields the 715-day sample whose volatility
+    quintiles carry the extreme-only cell sizes reported in the paper
+    (n_extreme = 17, 11, 53, 30, 59).
+    """
+    df_spreads = pd.read_csv('results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv('data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+
+    df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],
+                  on='date', how='inner')
+
+    if 'total_uncertainty' in df.columns and not df['total_uncertainty'].isna().all():
+        df['uncertainty'] = df['total_uncertainty']
+    else:
+        df['uncertainty'] = df['realized_vol'].fillna(df['parkinson_vol'])
+
+    df['volatility'] = df['realized_vol'].fillna(df['parkinson_vol'])
+    df = df.dropna(subset=['uncertainty', 'volatility', 'regime', 'cs_spread']).copy()
+    df = df.sort_values('date').reset_index(drop=True)
+
+    print(f"Table-16-convention dataset: {len(df)} rows")
+    return df
+
+
+def run_extreme_only_analysis():
+    """
+    Extreme-only counterpart to the directional comparison above.
+
+    Compares extreme regimes (extreme_greed + extreme_fear) vs neutral within
+    volatility quintiles, using the SAME quintile assignment as Table
+    `tab:within_quintile` (qcut on realized_vol-filled volatility over the
+    715-day sample). This is the analysis the paper's volatility-matched
+    figure caption describes; the original figure (fig2_volatility_matched)
+    instead pooled ALL non-neutral days as "directional".
+
+    Gap sign convention: gap = extreme_mean - neutral_mean (positive =
+    extremity premium). Note the directional CSV above uses the opposite
+    convention (neutral - directional).
+    """
+    from statsmodels.stats.multitest import multipletests
+
+    print("\n" + "="*70)
+    print("EXTREME-ONLY REGIME COMPARISON (Table-16 quintile assignment)")
+    print("="*70)
+
+    df = load_t16_data()
+    df['vol_quintile'] = pd.qcut(df['volatility'], 5, labels=[1, 2, 3, 4, 5])
+
+    results = []
+    for q in range(1, 6):
+        q_df = df[df['vol_quintile'] == q]
+
+        neutral = q_df[q_df['regime'] == 'neutral']['uncertainty']
+        extreme = q_df[q_df['regime'].isin(['extreme_greed', 'extreme_fear'])]['uncertainty']
+
+        if len(neutral) < 3 or len(extreme) < 3:
+            continue
+
+        gap = extreme.mean() - neutral.mean()
+        t_stat, p_value = stats.ttest_ind(extreme, neutral)
+        pooled_std = np.sqrt(
+            ((len(extreme)-1)*extreme.std()**2 + (len(neutral)-1)*neutral.std()**2) /
+            (len(extreme) + len(neutral) - 2)
+        )
+        cohens_d = gap / pooled_std if pooled_std > 0 else 0
+
+        print(f"  Q{q}: extreme n={len(extreme)}, mean={extreme.mean():.4f} | "
+              f"neutral n={len(neutral)}, mean={neutral.mean():.4f} | "
+              f"gap={gap:+.4f}, t={t_stat:.3f}, p={p_value:.4f}, d={cohens_d:.3f}")
+
+        results.append({
+            'vol_quintile': q,
+            'mean_vol': q_df['volatility'].mean(),
+            'neutral_mean': neutral.mean(),
+            'neutral_n': len(neutral),
+            'extreme_mean': extreme.mean(),
+            'extreme_n': len(extreme),
+            'gap': gap,
+            't_stat': t_stat,
+            'p_value': p_value,
+            'cohens_d': cohens_d,
+        })
+
+    results_df = pd.DataFrame(results)
+
+    if len(results_df) > 0:
+        _, p_adj, _, _ = multipletests(results_df['p_value'], method='holm')
+        results_df['p_adj_holm'] = p_adj
+        results_df['sig_holm'] = p_adj < 0.05
+
+    n_positive = (results_df['gap'] > 0).sum()
+    print(f"\n  Direction: extreme > neutral in {n_positive}/{len(results_df)} quintiles")
+    if n_positive < len(results_df):
+        rev = results_df[results_df['gap'] <= 0]['vol_quintile'].tolist()
+        print(f"  REVERSED (or zero) in quintile(s): {rev}")
+
+    results_df.to_csv('results/volatility_matched_extreme_only.csv', index=False)
+    print("  Saved to: results/volatility_matched_extreme_only.csv")
+
+    return results_df
+
+
 def run_overall_test(df):
     """Test neutral > directional controlling for volatility (regression approach)."""
     from scipy.stats import pearsonr
@@ -299,8 +405,11 @@ def main():
     quintile_results.to_csv('results/volatility_matched_regime_comparison.csv', index=False)
     print(f"\nResults saved to: results/volatility_matched_regime_comparison.csv")
 
-    return quintile_results, overall_results, regression_results
+    # Extreme-only counterpart (Table-16 quintile assignment)
+    extreme_only_results = run_extreme_only_analysis()
+
+    return quintile_results, overall_results, regression_results, extreme_only_results
 
 
 if __name__ == '__main__':
-    quintile_results, overall_results, regression_results = main()
+    quintile_results, overall_results, regression_results, extreme_only_results = main()
