@@ -26,6 +26,10 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
+# Deterministic bootstrap draws (repo convention, cf. full_sample_extension.py)
+MASTER_SEED = 42
+RNG = np.random.default_rng(MASTER_SEED)
+
 # Project paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.dirname(SCRIPT_DIR)
@@ -97,7 +101,7 @@ def bootstrap_ci(data, statistic_func, n_bootstrap=10000, ci=0.95):
     stats_list = []
     n = len(data)
     for _ in range(n_bootstrap):
-        sample = np.random.choice(data, size=n, replace=True)
+        sample = RNG.choice(data, size=n, replace=True)
         stats_list.append(statistic_func(sample))
     alpha = (1 - ci) / 2
     return np.percentile(stats_list, [alpha * 100, (1 - alpha) * 100])
@@ -180,8 +184,8 @@ def within_quintile_detailed(df):
         # Simpler bootstrap
         boot_gaps = []
         for _ in range(5000):
-            e_sample = np.random.choice(extreme.values, len(extreme), replace=True)
-            n_sample = np.random.choice(neutral.values, len(neutral), replace=True)
+            e_sample = RNG.choice(extreme.values, len(extreme), replace=True)
+            n_sample = RNG.choice(neutral.values, len(neutral), replace=True)
             boot_gaps.append(e_sample.mean() - n_sample.mean())
         ci_lower, ci_upper = np.percentile(boot_gaps, [2.5, 97.5])
 
