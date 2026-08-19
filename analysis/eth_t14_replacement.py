@@ -43,14 +43,18 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 REGIMES = ['extreme_greed', 'extreme_fear', 'fear', 'greed']
 
 
 def load_committed_eth():
     """Load the committed main-sample ETH artifact."""
-    df = pd.read_csv('results/eth_spread_data.csv', parse_dates=['date'])
+    df = pd.read_csv(PROJECT_ROOT / 'results/eth_spread_data.csv', parse_dates=['date'])
     print(f"Committed ETH data: {len(df)} rows, "
           f"{df['date'].min().date()} to {df['date'].max().date()}")
 
@@ -145,7 +149,7 @@ def main():
                                   'eth_parkinson_uncontrolled')
 
     results = pd.DataFrame(all_rows)
-    results.to_csv('results/eth_t14_replacement.csv', index=False)
+    results.to_csv(PROJECT_ROOT / 'results/eth_t14_replacement.csv', index=False)
     print("\nSaved: results/eth_t14_replacement.csv")
 
     # Verdict on the retracted number

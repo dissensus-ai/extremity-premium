@@ -18,14 +18,18 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_and_merge_data():
     """Load spread data and sentiment data, merge on date."""
     # Load datasets
-    df_spreads = pd.read_csv('results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv('data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df_spreads = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
 
     # Merge on date
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value', 'volatility']],
@@ -157,8 +161,8 @@ def load_t16_data():
     quintiles carry the extreme-only cell sizes reported in the paper
     (n_extreme = 17, 11, 53, 30, 59).
     """
-    df_spreads = pd.read_csv('results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv('data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df_spreads = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
 
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],
                   on='date', how='inner')
@@ -248,7 +252,7 @@ def run_extreme_only_analysis():
         rev = results_df[results_df['gap'] <= 0]['vol_quintile'].tolist()
         print(f"  REVERSED (or zero) in quintile(s): {rev}")
 
-    results_df.to_csv('results/volatility_matched_extreme_only.csv', index=False)
+    results_df.to_csv(PROJECT_ROOT / 'results/volatility_matched_extreme_only.csv', index=False)
     print("  Saved to: results/volatility_matched_extreme_only.csv")
 
     return results_df
@@ -402,7 +406,7 @@ def main():
         print(f"   ✗ Killer test inconclusive: is_neutral coef={regression_results['is_neutral_coef']:.4f}, p={regression_results['is_neutral_p']:.4f}")
 
     # Save results
-    quintile_results.to_csv('results/volatility_matched_regime_comparison.csv', index=False)
+    quintile_results.to_csv(PROJECT_ROOT / 'results/volatility_matched_regime_comparison.csv', index=False)
     print(f"\nResults saved to: results/volatility_matched_regime_comparison.csv")
 
     # Extreme-only counterpart (Table-16 quintile assignment)

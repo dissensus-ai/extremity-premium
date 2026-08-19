@@ -15,7 +15,11 @@ import numpy as np
 from scipy import stats
 import statsmodels.api as sm
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 try:
     import yfinance as yf
@@ -233,7 +237,7 @@ def main():
     print("="*70)
 
     # Load BTC sentiment data (for regime labels)
-    df_sentiment = pd.read_csv('data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
     print(f"\nSentiment data: {len(df_sentiment)} days")
 
     # Fetch ETH data
@@ -260,7 +264,7 @@ def main():
 
     # Load BTC regression results for comparison
     try:
-        btc_results = pd.read_csv('results/extremity_premium_regression.csv')
+        btc_results = pd.read_csv(PROJECT_ROOT / 'results/extremity_premium_regression.csv')
         compare_btc_eth(btc_results, eth_results)
     except FileNotFoundError:
         print("\nBTC results not found. Run extremity_premium_analysis.py first.")
@@ -270,10 +274,10 @@ def main():
     print("SAVING RESULTS")
     print("="*70)
 
-    eth_results.to_csv('results/eth_extremity_premium.csv', index=False)
+    eth_results.to_csv(PROJECT_ROOT / 'results/eth_extremity_premium.csv', index=False)
     print("  Saved: results/eth_extremity_premium.csv")
 
-    df_eth.to_csv('results/eth_spread_data.csv', index=False)
+    df_eth.to_csv(PROJECT_ROOT / 'results/eth_spread_data.csv', index=False)
     print("  Saved: results/eth_spread_data.csv")
 
     return eth_results, df_eth

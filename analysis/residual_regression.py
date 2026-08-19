@@ -21,13 +21,17 @@ import numpy as np
 from scipy import stats
 import statsmodels.api as sm
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_data():
     """Load the empirical data."""
-    df = pd.read_csv('results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv('data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
 
     df = pd.merge(df, df_sentiment[['date', 'regime', 'fear_greed_value']],
                   on='date', how='inner')
@@ -319,19 +323,19 @@ def main():
     residual_results, spread_resid, unc_resid = residual_regression(df)
 
     # Save residual results
-    pd.DataFrame([residual_results]).to_csv('results/residual_regression_results.csv', index=False)
+    pd.DataFrame([residual_results]).to_csv(PROJECT_ROOT / 'results/residual_regression_results.csv', index=False)
 
     # Symmetric test: spread residuals across regimes (was previously computed
     # but never regime-compared)
     spread_regime_results = spread_residual_regime_test(df, spread_resid)
-    spread_regime_results.to_csv('results/spread_residual_regime_results.csv', index=False)
+    spread_regime_results.to_csv(PROJECT_ROOT / 'results/spread_residual_regime_results.csv', index=False)
     print(f"\n✓ Results saved to results/spread_residual_regime_results.csv")
 
     # Run volume-controlled regression if volume available
     volume_results = volume_controlled_regression(df)
 
     if volume_results is not None:
-        volume_results.to_csv('results/volume_controlled_regime_results.csv', index=False)
+        volume_results.to_csv(PROJECT_ROOT / 'results/volume_controlled_regime_results.csv', index=False)
 
     print("\n" + "="*70)
     print("SUMMARY")

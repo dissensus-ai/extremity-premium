@@ -15,13 +15,17 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_data():
     """Load and prepare data with regime transitions."""
-    df_spreads = pd.read_csv('results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv('data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df_spreads = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
 
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],
                   on='date', how='inner')
@@ -271,10 +275,10 @@ def main():
     print("SAVING RESULTS")
     print("="*70)
 
-    window_results.to_csv('results/regime_transition_windows.csv', index=False)
+    window_results.to_csv(PROJECT_ROOT / 'results/regime_transition_windows.csv', index=False)
     print("  Saved: results/regime_transition_windows.csv")
 
-    daily_results.to_csv('results/regime_transition_daily.csv', index=False)
+    daily_results.to_csv(PROJECT_ROOT / 'results/regime_transition_daily.csv', index=False)
     print("  Saved: results/regime_transition_daily.csv")
 
     # Summary

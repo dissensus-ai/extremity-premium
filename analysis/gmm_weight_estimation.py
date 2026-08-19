@@ -24,22 +24,22 @@ Author: Murad Farzulla
 Date: January 2026
 """
 
-# Resolve the ../results/ paths below regardless of the invocation directory.
-import os as _os
-_os.chdir(_os.path.dirname(_os.path.abspath(__file__)))
-
 import pandas as pd
 import numpy as np
 from scipy import optimize, stats
 from scipy.linalg import inv
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_data():
     """Load the base data."""
-    df_spreads = pd.read_csv('../results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv('../data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df_spreads = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
 
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],
                   on='date', how='inner')
@@ -511,7 +511,7 @@ def main():
         est_table['ci_lower'] = boot_result['ci_lower']
         est_table['ci_upper'] = boot_result['ci_upper']
 
-    est_table.to_csv('../results/gmm_weight_estimates.csv', index=False)
+    est_table.to_csv(PROJECT_ROOT / 'results/gmm_weight_estimates.csv', index=False)
     print("  - results/gmm_weight_estimates.csv")
 
     # Summary statistics
@@ -527,7 +527,7 @@ def main():
         'w_epistemic': result['weights'][1],
         'w_volatility': result['weights'][2],
     }])
-    summary.to_csv('../results/gmm_estimation_summary.csv', index=False)
+    summary.to_csv(PROJECT_ROOT / 'results/gmm_estimation_summary.csv', index=False)
     print("  - results/gmm_estimation_summary.csv")
 
     # Key finding for paper

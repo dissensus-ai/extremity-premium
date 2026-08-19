@@ -19,21 +19,21 @@ Author: Murad Farzulla
 Date: January 2026
 """
 
-# Resolve the ../results/ paths below regardless of the invocation directory.
-import os as _os
-_os.chdir(_os.path.dirname(_os.path.abspath(__file__)))
-
 import pandas as pd
 import numpy as np
 from scipy import stats
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_data():
     """Load the base data."""
-    df_spreads = pd.read_csv('../results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv('../data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df_spreads = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
 
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],
                   on='date', how='inner')
@@ -284,11 +284,11 @@ def main():
     # Save comparison dataset
     df[['date', 'regime', 'raw_uncertainty', 'uncertainty_full',
         'uncertainty_expanding', 'uncertainty_rolling']].to_csv(
-        '../results/normalization_comparison.csv', index=False)
+        PROJECT_ROOT / 'results/normalization_comparison.csv', index=False)
     print("  - results/normalization_comparison.csv")
 
     # Save summary
-    summary_df.to_csv('../results/normalization_robustness_summary.csv', index=False)
+    summary_df.to_csv(PROJECT_ROOT / 'results/normalization_robustness_summary.csv', index=False)
     print("  - results/normalization_robustness_summary.csv")
 
     # Detailed correlations
@@ -301,7 +301,7 @@ def main():
         'correlation': correlations['correlation_full_rolling'],
         'n_obs': correlations['n_obs_rolling']
     }])
-    corr_df.to_csv('../results/normalization_correlations.csv', index=False)
+    corr_df.to_csv(PROJECT_ROOT / 'results/normalization_correlations.csv', index=False)
     print("  - results/normalization_correlations.csv")
 
     # Key finding for paper

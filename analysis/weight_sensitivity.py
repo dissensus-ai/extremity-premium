@@ -13,13 +13,17 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_data():
     """Load the base data."""
-    df_spreads = pd.read_csv('results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv('data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df_spreads = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
 
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],
                   on='date', how='inner')
@@ -155,7 +159,7 @@ def main():
             print(f"  {regime:15s}: mean={mean_gap:+.4f}, range=[{min_gap:+.4f}, {max_gap:+.4f}]")
 
     # Save results
-    results.to_csv('results/weight_sensitivity_results.csv', index=False)
+    results.to_csv(PROJECT_ROOT / 'results/weight_sensitivity_results.csv', index=False)
 
     # Create summary table for paper
     summary = pd.DataFrame({
@@ -176,7 +180,7 @@ def main():
             f"{results['extreme_fear_gap'].max():+.4f}",
         ]
     })
-    summary.to_csv('results/weight_sensitivity_summary.csv', index=False)
+    summary.to_csv(PROJECT_ROOT / 'results/weight_sensitivity_summary.csv', index=False)
 
     print("\n✓ Results saved to results/weight_sensitivity_results.csv")
     print("✓ Summary saved to results/weight_sensitivity_summary.csv")

@@ -24,13 +24,17 @@ from scipy import stats
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_data():
     """Load the base data."""
-    df_spreads = pd.read_csv('../results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv('../data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df_spreads = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
 
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],
                   on='date', how='inner')
@@ -380,11 +384,11 @@ def main():
         {'Model': 'Regimes only', 'R2': var_results['regimes_only']['r_squared'],
          'Incremental_R2': '—'},
     ])
-    decomp_table.to_csv('../results/variance_decomposition_table.csv', index=False)
+    decomp_table.to_csv(PROJECT_ROOT / 'results/variance_decomposition_table.csv', index=False)
     print("  - results/variance_decomposition_table.csv")
 
     # Within-bin results
-    bin_results.to_csv('../results/within_volatility_bin_analysis.csv', index=False)
+    bin_results.to_csv(PROJECT_ROOT / 'results/within_volatility_bin_analysis.csv', index=False)
     print("  - results/within_volatility_bin_analysis.csv")
 
     # Summary
@@ -396,7 +400,7 @@ def main():
         'regime_f_pvalue': var_results['f_test_regimes']['pvalue'] if var_results['f_test_regimes'] else np.nan,
         'heteroscedasticity_any_significant': hetero_results['any_significant'],
     }
-    pd.DataFrame([summary]).to_csv('../results/volatility_decomposition_summary.csv', index=False)
+    pd.DataFrame([summary]).to_csv(PROJECT_ROOT / 'results/volatility_decomposition_summary.csv', index=False)
     print("  - results/volatility_decomposition_summary.csv")
 
     # Key finding for paper

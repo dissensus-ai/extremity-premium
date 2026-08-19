@@ -14,15 +14,19 @@ import numpy as np
 from scipy import stats
 import statsmodels.api as sm
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 np.random.seed(42)
 
 
 def load_data():
     """Load and prepare data."""
-    df_spreads = pd.read_csv('results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv('data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df_spreads = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
 
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],
                   on='date', how='inner')
@@ -253,13 +257,13 @@ def main():
     print("SAVING RESULTS")
     print("="*70)
 
-    pd.DataFrame([bootstrap_results]).to_csv('results/bootstrap_extreme_neutral_gap.csv', index=False)
+    pd.DataFrame([bootstrap_results]).to_csv(PROJECT_ROOT / 'results/bootstrap_extreme_neutral_gap.csv', index=False)
     print("  Saved: results/bootstrap_extreme_neutral_gap.csv")
 
-    pd.DataFrame([permutation_results]).to_csv('results/permutation_test_results.csv', index=False)
+    pd.DataFrame([permutation_results]).to_csv(PROJECT_ROOT / 'results/permutation_test_results.csv', index=False)
     print("  Saved: results/permutation_test_results.csv")
 
-    regime_cis.to_csv('results/bootstrap_regime_cis.csv', index=False)
+    regime_cis.to_csv(PROJECT_ROOT / 'results/bootstrap_regime_cis.csv', index=False)
     print("  Saved: results/bootstrap_regime_cis.csv")
 
     # Summary

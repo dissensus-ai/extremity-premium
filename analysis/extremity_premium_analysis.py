@@ -22,13 +22,17 @@ import numpy as np
 from scipy import stats
 import statsmodels.api as sm
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_and_merge_data():
     """Load spread data and sentiment data, merge on date."""
-    df_spreads = pd.read_csv('results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv('data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df_spreads = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
 
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],
                   on='date', how='inner')
@@ -329,19 +333,19 @@ def save_results(desc_stats, regime_results, quintile_results, asymmetry_results
     print("="*70)
 
     # Descriptive stats
-    desc_stats.to_csv('results/extremity_premium_descriptive.csv', index=False)
+    desc_stats.to_csv(PROJECT_ROOT / 'results/extremity_premium_descriptive.csv', index=False)
     print("  Saved: results/extremity_premium_descriptive.csv")
 
     # Regression results
-    regime_results.to_csv('results/extremity_premium_regression.csv', index=False)
+    regime_results.to_csv(PROJECT_ROOT / 'results/extremity_premium_regression.csv', index=False)
     print("  Saved: results/extremity_premium_regression.csv")
 
     # Quintile analysis
-    quintile_results.to_csv('results/extremity_premium_quintiles.csv', index=False)
+    quintile_results.to_csv(PROJECT_ROOT / 'results/extremity_premium_quintiles.csv', index=False)
     print("  Saved: results/extremity_premium_quintiles.csv")
 
     # Asymmetry test
-    pd.DataFrame([asymmetry_results]).to_csv('results/extremity_premium_asymmetry.csv', index=False)
+    pd.DataFrame([asymmetry_results]).to_csv(PROJECT_ROOT / 'results/extremity_premium_asymmetry.csv', index=False)
     print("  Saved: results/extremity_premium_asymmetry.csv")
 
 

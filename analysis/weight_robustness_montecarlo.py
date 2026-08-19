@@ -16,21 +16,21 @@ Author: Murad Farzulla
 Date: January 2026
 """
 
-# Resolve the ../results/ paths below regardless of the invocation directory.
-import os as _os
-_os.chdir(_os.path.dirname(_os.path.abspath(__file__)))
-
 import pandas as pd
 import numpy as np
 from scipy import stats
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
+
+# Resolve repo-relative paths regardless of the invocation directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_data():
     """Load the base data (same as weight_sensitivity.py)."""
-    df_spreads = pd.read_csv('../results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv('../data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    df_spreads = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
+    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
 
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],
                   on='date', how='inner')
@@ -277,7 +277,7 @@ def main():
               f"{res['fraction_preserved']*100:.1f}% preserved")
 
     # Save results
-    results['detailed_results'].to_csv('../results/mc_weight_robustness_results.csv', index=False)
+    results['detailed_results'].to_csv(PROJECT_ROOT / 'results/mc_weight_robustness_results.csv', index=False)
 
     # Create summary for paper
     summary = pd.DataFrame({
@@ -300,7 +300,7 @@ def main():
             failure_analysis['fear_failures'] if failure_analysis else 0,
         ]
     })
-    summary.to_csv('../results/mc_weight_robustness_summary.csv', index=False)
+    summary.to_csv(PROJECT_ROOT / 'results/mc_weight_robustness_summary.csv', index=False)
 
     print("\n" + "="*70)
     print("OUTPUT FILES")
