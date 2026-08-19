@@ -53,7 +53,7 @@ the raw OHLCV + F&G series.
 | 8 | `momentum_control.py` | **momentum control** (`momentum_control_results.csv`; effect size robust d≈0.25, significance marginal under momentum+block-permutation) |
 | 9 | `weight_sensitivity.py`, `weight_robustness_montecarlo.py`, `gmm_weight_estimation.py` | weight robustness (25 configs; 1000 Dirichlet draws with coefficient distribution; GMM J=75548 rejection + weak identification) |
 | 10 | `expanding_window_robustness.py` | look-ahead-bias check (r=0.96) |
-| 11 | `full_sample_extension.py` | extended-sample validation + extended within-quintile (Table `tab:extended_sample`, `tab:market_cycles`) |
+| 11 | `full_sample_extension.py` | extended-sample validation + extended within-quintile (Table `tab:extended_sample`, `tab:market_cycles`). Bootstrap CIs + permutation placebos are seeded (`MASTER_SEED=42`); `--stochastic-only` re-runs just those from the committed `full_sample_*_data.csv` without re-fetching |
 | 12 | `placebo_tests.py`, `bootstrap_permutation_tests.py` | placebo + block-shuffle permutation inference |
 | 13 | `eth_cross_asset_validation.py` | ETH replication (d=0.48) |
 | 14 | `calibration.py`, `smm_validation.py` | ABM calibration + SMM (reduced-form model, J=0.83/p=0.36) |

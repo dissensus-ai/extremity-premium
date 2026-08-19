@@ -37,6 +37,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Master seed for all stochastic procedures (bootstrap CIs, permutation
+# placebos), following the np.random.default_rng pattern in
+# analysis/momentum_control.py. Previously these ran unseeded.
+MASTER_SEED = 42
+RNG = np.random.default_rng(MASTER_SEED)
+
 # Output directories
 RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'results')
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'datasets')
@@ -299,10 +305,13 @@ def compute_regime_statistics(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(results)
 
 
-def compute_extremity_premium(df: pd.DataFrame) -> Dict:
+def compute_extremity_premium(df: pd.DataFrame, rng: np.random.Generator = None) -> Dict:
     """
     Compute extremity premium with full statistical details.
     """
+    if rng is None:
+        rng = RNG
+
     extreme = df[df['is_extreme']]['cs_spread']
     neutral = df[df['regime'] == 'neutral']['cs_spread']
 
@@ -317,8 +326,8 @@ def compute_extremity_premium(df: pd.DataFrame) -> Dict:
     n_boot = 10000
     boot_diffs = []
     for _ in range(n_boot):
-        ext_sample = np.random.choice(extreme.values, size=len(extreme), replace=True)
-        neu_sample = np.random.choice(neutral.values, size=len(neutral), replace=True)
+        ext_sample = rng.choice(extreme.values, size=len(extreme), replace=True)
+        neu_sample = rng.choice(neutral.values, size=len(neutral), replace=True)
         boot_diffs.append(ext_sample.mean() - neu_sample.mean())
 
     ci_lower, ci_upper = np.percentile(boot_diffs, [2.5, 97.5])
@@ -484,10 +493,14 @@ def granger_causality_test(df: pd.DataFrame, max_lag: int = 5) -> pd.DataFrame:
     return results_df
 
 
-def run_placebo_tests(df: pd.DataFrame, n_perms: int = 10000) -> Dict:
+def run_placebo_tests(df: pd.DataFrame, n_perms: int = 10000,
+                      rng: np.random.Generator = None) -> Dict:
     """
     Placebo tests: block-shuffled permutation and time-reversed.
     """
+    if rng is None:
+        rng = RNG
+
     logger.info("Running placebo tests...")
 
     # Observed gap
@@ -501,7 +514,7 @@ def run_placebo_tests(df: pd.DataFrame, n_perms: int = 10000) -> Dict:
 
     perm_gaps = []
     for _ in range(n_perms):
-        shuffled = np.random.permutation(is_extreme)
+        shuffled = rng.permutation(is_extreme)
         ext_mean = spread_values[shuffled].mean()
         neu_mean = spread_values[~shuffled].mean()
         perm_gaps.append(ext_mean - neu_mean)
@@ -521,7 +534,7 @@ def run_placebo_tests(df: pd.DataFrame, n_perms: int = 10000) -> Dict:
     for _ in range(n_perms):
         # Shuffle block labels
         shuffled_blocks = blocks.copy()
-        np.random.shuffle(shuffled_blocks)
+        rng.shuffle(shuffled_blocks)
 
         # Reconstruct shuffled regime assignments
         shuffled_regime = pd.Series(index=df_sorted.index, dtype=str)
@@ -631,6 +644,58 @@ def analyze_by_market_cycle(df: pd.DataFrame) -> pd.DataFrame:
 # =============================================================================
 # MAIN EXECUTION
 # =============================================================================
+
+def rerun_stochastic_from_cached():
+    """
+    Re-run ONLY the stochastic outputs (bootstrap CIs, permutation placebos)
+    from the committed datasets, without re-fetching from the APIs.
+
+    Loads results/full_sample_btc_data.csv and results/full_sample_eth_data.csv
+    (the committed extended samples) so the sample is held fixed and any change
+    in the outputs is attributable to the RNG, not to new data. Overwrites:
+      - results/full_sample_extremity_premium.csv
+      - results/full_sample_eth_extremity_premium.csv
+      - results/full_sample_placebo_tests.csv
+    Deterministic outputs (regime stats, within-quintile, regression, Granger,
+    market cycles) are untouched.
+    """
+    logger.info("=" * 70)
+    logger.info("STOCHASTIC-ONLY RERUN FROM CACHED DATA (seed=%d)", MASTER_SEED)
+    logger.info("=" * 70)
+
+    df = pd.read_csv(os.path.join(RESULTS_DIR, 'full_sample_btc_data.csv'))
+    eth_full = pd.read_csv(os.path.join(RESULTS_DIR, 'full_sample_eth_data.csv'))
+    for frame in (df, eth_full):
+        # Recompute rather than trust CSV round-tripped booleans
+        frame['is_extreme'] = frame['regime'].isin(['extreme_fear', 'extreme_greed'])
+
+    logger.info("BTC: %d days, ETH: %d days (cached)", len(df), len(eth_full))
+
+    premium = compute_extremity_premium(df)
+    logger.info("BTC premium: gap=%.4f bps, 95%% CI [%.4f, %.4f], p=%.2e",
+                premium['gap'], premium['ci_lower'], premium['ci_upper'],
+                premium['p_value'])
+    pd.DataFrame([premium]).to_csv(
+        os.path.join(RESULTS_DIR, 'full_sample_extremity_premium.csv'), index=False
+    )
+
+    eth_premium = compute_extremity_premium(eth_full)
+    logger.info("ETH premium: gap=%.4f bps, 95%% CI [%.4f, %.4f], p=%.2e",
+                eth_premium['gap'], eth_premium['ci_lower'],
+                eth_premium['ci_upper'], eth_premium['p_value'])
+    pd.DataFrame([eth_premium]).to_csv(
+        os.path.join(RESULTS_DIR, 'full_sample_eth_extremity_premium.csv'), index=False
+    )
+
+    placebo_results = run_placebo_tests(df, n_perms=10000)
+    logger.info("Placebo: perm_p=%.4f, block_p=%.4f",
+                placebo_results['perm_p'], placebo_results['block_p'])
+    pd.DataFrame([placebo_results]).to_csv(
+        os.path.join(RESULTS_DIR, 'full_sample_placebo_tests.csv'), index=False
+    )
+
+    return premium, eth_premium, placebo_results
+
 
 def main():
     """
@@ -770,4 +835,7 @@ def main():
 
 
 if __name__ == '__main__':
-    btc_df, eth_df = main()
+    if '--stochastic-only' in sys.argv:
+        rerun_stochastic_from_cached()
+    else:
+        btc_df, eth_df = main()
