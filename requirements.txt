@@ -21,9 +21,17 @@ scipy>=1.12.0
 # Time series & factor models
 statsmodels>=0.14.1
 arch>=7.0.0
+linearmodels>=6.0
+patsy>=0.5.6
+
+# Market data (analysis/eth_cross_asset_validation.py, analysis/lob_validation.py)
+yfinance>=0.2.40
+ccxt>=4.0.0
+kaggle>=1.6.0
 
 # Streaming & async
 kafka-python==2.0.2
+aiokafka>=0.10.0
 asyncio-mqtt==0.16.1
 aiohttp==3.12.14
 
@@ -43,6 +51,8 @@ sortedcontainers==2.4.0
 networkx==3.2.1
 
 # Visualization & monitoring
+matplotlib>=3.8.0
+seaborn>=0.13.0
 plotly==5.18.0
 dash==2.14.2
 dash-bootstrap-components==1.5.0
