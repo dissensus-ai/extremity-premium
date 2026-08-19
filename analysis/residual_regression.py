@@ -143,6 +143,91 @@ def residual_regression(df):
     return results, spread_resid, unc_resid
 
 
+def spread_residual_regime_test(df, spread_resid):
+    """
+    Symmetric counterpart to the uncertainty-residual regime comparison above:
+    compare volatility-purged SPREAD residuals across sentiment regimes.
+
+    The spread residuals come from the same Step-1 regression (CS spreads on
+    realized volatility, the same control set as the uncertainty-residual
+    analysis). Tests extreme_greed vs neutral and extreme_fear vs neutral,
+    with Holm correction across the two regime tests, plus a pooled
+    extreme-vs-neutral test.
+    """
+    from statsmodels.stats.multitest import multipletests
+
+    print("\n" + "-"*70)
+    print("REGIME EFFECTS ON VOLATILITY-PURGED SPREADS")
+    print("-"*70)
+
+    df = df.copy()
+    df['spread_resid'] = spread_resid
+
+    regime_means = df.groupby('regime')['spread_resid'].agg(['mean', 'std', 'count'])
+    regime_means = regime_means.sort_values('mean', ascending=False)
+
+    neutral_mean = regime_means.loc['neutral', 'mean'] if 'neutral' in regime_means.index else 0
+
+    print(f"\n{'Regime':<15} {'Mean Resid':>12} {'Gap vs Neutral':>15}")
+    print("-"*45)
+    for regime in regime_means.index:
+        mean = regime_means.loc[regime, 'mean']
+        gap = mean - neutral_mean
+        print(f"{regime:<15} {mean:>+12.4f} {gap:>+15.4f}")
+
+    neutral_resid = df[df['regime'] == 'neutral']['spread_resid']
+
+    rows = []
+    p_values = []
+    for regime in ['extreme_greed', 'extreme_fear']:
+        regime_resid = df[df['regime'] == regime]['spread_resid']
+        t_stat, p_val = stats.ttest_ind(regime_resid, neutral_resid)
+        gap = regime_resid.mean() - neutral_resid.mean()
+        print(f"\n★ {regime} vs neutral (on spread residuals):")
+        print(f"  gap = {gap:+.4f} bps, t = {t_stat:.3f}, p = {p_val:.4f}")
+        rows.append({
+            'comparison': f'{regime}_vs_neutral',
+            'n_regime': len(regime_resid),
+            'n_neutral': len(neutral_resid),
+            'gap': gap,
+            't_stat': t_stat,
+            'p_value': p_val,
+        })
+        p_values.append(p_val)
+
+    _, p_adj, _, _ = multipletests(p_values, method='holm')
+    for row, p_holm in zip(rows, p_adj):
+        row['p_adj_holm'] = p_holm
+        row['sig_holm'] = p_holm < 0.05
+
+    # Pooled extreme vs neutral (single test, no correction needed)
+    extreme_resid = df[df['regime'].isin(['extreme_greed', 'extreme_fear'])]['spread_resid']
+    t_pool, p_pool = stats.ttest_ind(extreme_resid, neutral_resid)
+    gap_pool = extreme_resid.mean() - neutral_resid.mean()
+    print(f"\n★ Pooled extreme vs neutral (on spread residuals):")
+    print(f"  gap = {gap_pool:+.4f} bps, t = {t_pool:.3f}, p = {p_pool:.4f}")
+    rows.append({
+        'comparison': 'pooled_extreme_vs_neutral',
+        'n_regime': len(extreme_resid),
+        'n_neutral': len(neutral_resid),
+        'gap': gap_pool,
+        't_stat': t_pool,
+        'p_value': p_pool,
+        'p_adj_holm': np.nan,
+        'sig_holm': p_pool < 0.05,
+    })
+
+    results_df = pd.DataFrame(rows)
+
+    if (results_df['p_value'] >= 0.05).all():
+        print("\n✗ NO spread-residual premium: after purging realized volatility,")
+        print("  spreads do NOT differ significantly between extreme and neutral regimes.")
+    else:
+        print("\n✓ Spread-residual differences detected (see table above).")
+
+    return results_df
+
+
 def volume_controlled_regression(df):
     """
     Add trading volume to regime regression.
@@ -235,6 +320,12 @@ def main():
 
     # Save residual results
     pd.DataFrame([residual_results]).to_csv('results/residual_regression_results.csv', index=False)
+
+    # Symmetric test: spread residuals across regimes (was previously computed
+    # but never regime-compared)
+    spread_regime_results = spread_residual_regime_test(df, spread_resid)
+    spread_regime_results.to_csv('results/spread_residual_regime_results.csv', index=False)
+    print(f"\n✓ Results saved to results/spread_residual_regime_results.csv")
 
     # Run volume-controlled regression if volume available
     volume_results = volume_controlled_regression(df)
