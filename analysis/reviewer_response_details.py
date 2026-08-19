@@ -36,9 +36,15 @@ DATA_DIR = os.path.join(PROJECT_DIR, "data", "datasets")
 def load_data():
     """Load main dataset."""
     spread_path = os.path.join(RESULTS_DIR, "real_spread_data.csv")
+    if not os.path.exists(spread_path):
+        raise FileNotFoundError(
+            f"Cannot find {spread_path} -- regenerate it with analysis/real_spread_validation.py (see REPRODUCE.md)")
     df_spreads = pd.read_csv(spread_path, parse_dates=['date'])
 
     sentiment_path = os.path.join(DATA_DIR, "btc_sentiment_daily.csv")
+    if not os.path.exists(sentiment_path):
+        raise FileNotFoundError(
+            f"Cannot find {sentiment_path} -- this dataset is committed with the repository; restore it from git")
     df_sentiment = pd.read_csv(sentiment_path, parse_dates=['date'])
 
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],

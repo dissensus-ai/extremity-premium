@@ -237,7 +237,11 @@ def main():
     print("="*70)
 
     # Load BTC sentiment data (for regime labels)
-    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    sentiment_path = PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv'
+    if not sentiment_path.exists():
+        raise FileNotFoundError(
+            f"Cannot find {sentiment_path} -- this dataset is committed with the repository; restore it from git")
+    df_sentiment = pd.read_csv(sentiment_path, parse_dates=['date'])
     print(f"\nSentiment data: {len(df_sentiment)} days")
 
     # Fetch ETH data

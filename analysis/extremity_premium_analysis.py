@@ -31,8 +31,16 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 def load_and_merge_data():
     """Load spread data and sentiment data, merge on date."""
-    df_spreads = pd.read_csv(PROJECT_ROOT / 'results/real_spread_data.csv', parse_dates=['date'])
-    df_sentiment = pd.read_csv(PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv', parse_dates=['date'])
+    spread_path = PROJECT_ROOT / 'results/real_spread_data.csv'
+    if not spread_path.exists():
+        raise FileNotFoundError(
+            f"Cannot find {spread_path} -- regenerate it with analysis/real_spread_validation.py (see REPRODUCE.md)")
+    df_spreads = pd.read_csv(spread_path, parse_dates=['date'])
+    sentiment_path = PROJECT_ROOT / 'data/datasets/btc_sentiment_daily.csv'
+    if not sentiment_path.exists():
+        raise FileNotFoundError(
+            f"Cannot find {sentiment_path} -- this dataset is committed with the repository; restore it from git")
+    df_sentiment = pd.read_csv(sentiment_path, parse_dates=['date'])
 
     df = pd.merge(df_spreads, df_sentiment[['date', 'regime', 'fear_greed_value']],
                   on='date', how='inner')
