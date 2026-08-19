@@ -1,0 +1,13 @@
+spec,dv,control,estimator,n,regime,coefficient,p_value
+eth_parkinson_ctrl_realized,parkinson_vol,realized_vol,OLS_HC3,734,extreme_greed,0.003291961720338415,0.12813431000343448
+eth_parkinson_ctrl_realized,parkinson_vol,realized_vol,OLS_HC3,734,extreme_fear,0.005710799817273883,0.029965044161143206
+eth_parkinson_ctrl_realized,parkinson_vol,realized_vol,OLS_HC3,734,fear,0.0013147461425059106,0.5351605501682966
+eth_parkinson_ctrl_realized,parkinson_vol,realized_vol,OLS_HC3,734,greed,0.0009269986654125918,0.5458909019648022
+eth_cs_canonical_ctrl_parkinson,cs_spread_canonical,parkinson_vol,OLS_HC3,738,extreme_greed,0.0021161899587343407,0.30707727322248557
+eth_cs_canonical_ctrl_parkinson,cs_spread_canonical,parkinson_vol,OLS_HC3,738,extreme_fear,0.004859700259581434,0.05550970629772842
+eth_cs_canonical_ctrl_parkinson,cs_spread_canonical,parkinson_vol,OLS_HC3,738,fear,0.0015288369878843403,0.4077633557704674
+eth_cs_canonical_ctrl_parkinson,cs_spread_canonical,parkinson_vol,OLS_HC3,738,greed,-0.00012382364947005902,0.9309154707779498
+eth_parkinson_uncontrolled,parkinson_vol,none,OLS_HC3,739,extreme_greed,0.007150391690080129,0.001449140821857364
+eth_parkinson_uncontrolled,parkinson_vol,none,OLS_HC3,739,extreme_fear,0.011531905390275944,0.0003602568190839732
+eth_parkinson_uncontrolled,parkinson_vol,none,OLS_HC3,739,fear,0.005314893606807712,0.02973732908584114
+eth_parkinson_uncontrolled,parkinson_vol,none,OLS_HC3,739,greed,0.002234314891844328,0.2152280124241135

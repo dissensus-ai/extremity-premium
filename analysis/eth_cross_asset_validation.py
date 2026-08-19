@@ -77,8 +77,12 @@ def compute_spread_metrics(df):
     df['realized_vol'] = df['returns'].rolling(5).std() * np.sqrt(252)
 
     # Corwin-Schultz spread (simplified)
-    beta = np.log(df['high'] / df['low'])**2
-    df['beta'] = beta
+    # beta = (ln(H_t/L_t))^2 + (ln(H_{t-1}/L_{t-1}))^2, i.e. the rolling 2-day
+    # sum of squared log high-low ranges (matches full_sample_extension.py:176).
+    # Previously this used a single-day (ln(H/L))^2, which is inconsistent with
+    # the 2-day gamma term below and with the canonical CS estimator.
+    log_hl_sq = np.log(df['high'] / df['low'])**2
+    df['beta'] = log_hl_sq.rolling(2).sum()
     df['gamma'] = np.log(df[['high']].rolling(2).max()['high'] /
                         df[['low']].rolling(2).min()['low'])**2
 
